@@ -1,0 +1,13 @@
+{% for comentario in comentarios %}
+    <div class="form-group">
+        <label><img src="/media/{{ comentario.autor.image }}" width="30" height="30"><a href="{% url 'profile' user=comentario.autor %}">@{{ comentario.autor }}</a><i> el {{ comentario.fecha }}</i></label>
+        <input type="text" readonly class="form-control-plaintext replies" value="{{ comentario.contenido }}">
+    </div>
+{% endfor %}
+
+{% widthratio next 1 10 as page %}
+{% if total|add:"0" > page|add:"0" %}
+    <div class="text-center">
+        <button class="btn btn-info" id="load_more" next="{{ next }}">Cargar comentarios</button>
+    </div>
+{% endif %}

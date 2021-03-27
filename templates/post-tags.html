@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tag_extras %}
+
+{% block meta %}
+{% endblock %}
+
+{# Estilos #}
+{% block css %}
+{% endblock %}
+
+{# Contenido principal #}
+{% block content %}
+    <div class="tag-header">
+        <nav class="navbar navbar-dark bg-dark">
+            <form action="{% url 'buscar-etiqueta' %}" method="GET" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" name="buscar">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Buscar Etiqueta</button>
+            </form>
+        </nav>
+     </div>
+    <main class="thread-container">
+        <table class="table table-striped tags-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-image"></i></th>
+                    <th><i class="fas fa-tag"></i></th>
+                    <th><i class="fas fa-clock"></i></th>
+                    <th><i class="fas fa-plus"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etiqueta in etiquetas %}
+                    <tr>
+                        <td><img src="/media/{{ etiqueta.imagen }}" alt="{{ etiqueta.nombre }}" width="30" height="30" class="image-tag"></td>  
+                        <td>{{ etiqueta.nombre }}</td>
+                        <td>{{ etiqueta.creado }}</td>
+                        {% postExists etiqueta.id post_id as r %}
+                        {% if r %}
+                            <td><a id="{{ etiqueta.id }}" class="btn btn-info disabled in-use">Estás usando esta etiqueta</a></td>                                       
+                        {% else %}
+                            <td><a id="{{ etiqueta.id }}" href="#" class="btn btn-info add-tag">Cambiar etiqueta</a></td>
+                        {% endif %}  
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>      
+    </main>
+{% endblock %}
+
+{# Scripts #}
+{% block javascript %}
+    <script>
+        $(document).ready(function(){              
+            $('body').on('click', '.add-tag', function(e){
+                e.preventDefault();
+                if($('.in-use').length){
+                    $.get("{% url 'change-post-tags' %}", {data: $(this).attr("id"), post: "{{ post_id }}"}).done(function(i) {
+                        javascript:history.go(-1);
+                    }); 
+                } else {
+                    $.get("{% url 'add-tags' %}", {data: $(this).attr("id")}).done(function(i) {
+                        javascript:history.go(-1);
+                    }); 
+                }               
+            });
+        });
+    </script>
+{% endblock %}

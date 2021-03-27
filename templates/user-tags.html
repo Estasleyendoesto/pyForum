@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tag_extras %}
+
+{% block meta %}
+{% endblock %}
+
+{# Estilos #}
+{% block css %}
+{% endblock %}
+
+{# Contenido principal #}
+{% block content %}
+    <div class="tag-header">
+        <nav class="navbar navbar-dark bg-dark">
+            <h3 class="user-tags-h3">Mis etiquetas</h3>
+            <form action="{% url 'buscar-etiqueta' %}" method="GET" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" name="buscar">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Buscar Etiqueta</button>
+            </form>
+        </nav>
+     </div>
+     <main class="thread-container">
+        <table class="table table-striped tags-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-image"></i></th>
+                    <th><i class="fas fa-tag"></i></th>
+                    <th><i class="fas fa-clock"></i></th>
+                    <th><i class="fas fa-minus"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tag in etiquetas %}
+                    <tr>
+                        <td><img src="/media/{{ tag.etiqueta.imagen }}" alt="{{ tag.etiqueta.nombre }}" width="30" height="30"></td>  
+                        <td>{{ tag.etiqueta.nombre }}</td>
+                        <td>{{ tag.etiqueta.creado }}</td>
+                        <td><a href="{% url 'remove-tag' id=tag.etiqueta.id %}" class="btn btn-danger">Remover etiqueta</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>      
+    </main>
+{% endblock %}
+
+{# Scripts #}
+{% block javascript %}
+{% endblock %}

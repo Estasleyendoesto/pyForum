@@ -1,0 +1,10 @@
+{% load tag_extras %}
+
+{% if auth %}
+    {% lista user as r %}
+    {{ r | safe }}
+{% else %}
+    {% listaOff as r %}
+    {{ r | safe }}
+{% endif %}
+

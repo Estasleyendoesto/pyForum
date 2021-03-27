@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tag_extras %}
+
+{# Meta #}
+{% block meta %}
+    {# Para los motores de búsqueda #}
+    <meta name="author" content="Sapochan"> <!-- Aquí el nombre del autor del hilo -->
+    <meta name="description" content="Foro online como ningún otro"> <!-- Aquí breves primeras 100 líneas del documento -->
+    <META name="keywords" content="foro, debate, discusión, internacional, español">
+    <META name="date" content="2020-05-25T08:49:37+00:00">
+
+    {# Para los enlaces usados por facebook y twitter #}
+    <meta property="og:image" content="{% static 'img/logo.png' %}"> <!-- Imagen -->
+    <meta property="og:title" content="Boo!">
+    <meta property="og:description" content="Foro online como ningún otro">
+{% endblock %}
+
+{# Estilos #}
+{% block css %}{% endblock %}
+
+{# Contenido principal #}
+{% block content %}
+    <main class="thread-container">
+        <div class="" style="height:45px;">
+            <a href="{% url 'post-creator' %}" class="btn btn-success float-left" role="button"><i class="fas fa-edit"></i> Nuevo Hilo</a>
+            <div class="general-stats">
+                Miembros: <b>{{ forum.usuarios_registrados }}</b> (Online: <span><b>{% if not forum.usuarios_online %}0{% else %}{{ forum.usuarios_online }}{% endif %}</b></span>) | Hilos: <b>{{ forum.hilos_creados }}</b> | Mensajes: <b>{{ forum.comentarios_totales }}</b> 
+            </div>
+        </div>
+        <div class="thread">
+            <table class="table table-striped post-list">
+                <thead>
+                    <tr>
+                        <th>Tema</th>
+                        <th><i class="fas fa-user"></i></th>
+                        <th><i class="fas fa-clock"></i></th>
+                        <th><i class="fas fa-comment"></i></th>
+                        <th><i class="fas fa-tag"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if not tag %}
+                        {% for post in posts %}
+                        <tr>
+                            {% load_img post.id as i %}
+                            <td><a href="{% url 'post' post=post.id %}">{{ i | safe }}{{ post.titulo }}</a></td>
+                            <td><a href="{% url 'profile' user=post.autor %}">@{{ post.autor.username }}</a></td>
+                            <td>{{ post.creado }}</td>
+                            <td>{% if not post.comentarios %}0{% else %}{{ post.comentarios }}{% endif %}</td>
+                            {% find_tag post.id as r %}
+                            <td>{{ r | safe }}</td>
+                        </tr>  
+                        {% endfor %}
+                    {% else %}
+                        {% for p in posts %}
+                            {% if not p.post.borrador %}
+                                {% load_img p.post.id as i %}
+                                <td><a href="{% url 'post' post=p.post.id %}">{{ i | safe }}{{ p.post.titulo }}</a></td>
+                                <td><a href="{% url 'profile' user=p.post.autor %}">@{{ p.post.autor.username }}</a></td>
+                                <td>{{ p.post.creado }}</td>
+                                <td>{% if not p.post.comentarios %}0{% else %}{{ p.post.comentarios }}{% endif %}</td>
+                                {% load_tags p.post.id as r %}
+                                <td>{{ r | safe }}</td>
+                            {% endif %}                          
+                        {% endfor %}               
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+{% endblock %}
+
+{# Scripts #}
+{% block javascript %}{% endblock %}

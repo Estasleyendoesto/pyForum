@@ -1,0 +1,56 @@
+.markdown {
+    font-family: Helvetica, arial, sans-serif;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    text-align: justify;
+    padding: 30px;
+    color: #333;
+}
+
+.markdown a {
+    color: #4183C4;
+    text-decoration: none;
+}
+
+.markdown h1, 
+.markdown h2, 
+.markdown h3, 
+.markdown h4, 
+.markdown h5, 
+.markdown h6 {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.markdown ul, .markdown ol {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.markdown blockquote {
+    padding-top: 10px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    border-left: 5px solid #ccc;
+    background-color: rgb(243, 243, 243);
+}
+
+.markdown code {
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+}
+
+.markdown hr {
+    border-top: 2px solid rgb(161, 161, 161);
+}
+
+.markdown img {
+    max-width: 100%;
+    max-height: 600px;   
+}
+
+redon img {
+    border-radius: 50%;
+}
+

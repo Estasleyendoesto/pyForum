@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+    <main class="thread-container">
+        <div class="profile-header" style="background-color:{{ request.user.profile_color }};">
+            <h2>Configuración</h2>
+        </div>
+        <div class="profile-body">
+            <form method="POST" action="{% url 'personal-form' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3>Datos personales</h3>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Nombre:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Apellidos:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Frase:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="frase" class="form-control" value="{{ user.frase }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Imagen: </label>
+                    <div class="col-sm-10">
+                        <input type="file" name="imagen" class="btn btn-dark ">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info">Actualizar cambios</button>
+                </div>
+            </form>
+
+            <form method="POST" action="{% url 'prefer-form' %}">
+                {% csrf_token %}
+                <h3>Preferencias</h3>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Color del perfil:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="profile_color" class="form-control" value="{{ user.profile_color }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">Mostrar contenido para adultos</div>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input name="adult_content" class="form-check-input" type="checkbox" {% if user.adult_content %}checked{% endif %}>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info">Actualizar cambios</button>
+                </div>
+            </form>
+
+            <form method="POST" action="{% url 'account-form' %}">
+                {% csrf_token %}
+                <h3>Cuenta</h3>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Nombre de usuario:</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" value="{{ user.username|capfirst }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Correo electrónico:</label>
+                    <div class="col-sm-10">
+                        <input type="email" name="email" class="form-control" id="email" value="{{ user.email }}" required>
+                        {% if email_nada %}
+                            <small class="form-text text-muted">{{ email_nada }}}</small>
+                        {% elif email %}
+                            <small class="form-text text-muted">{{ email }}</small>
+                        {% elif email_valid %}
+                            <small class="form-text text-muted">{{ email_valid }}</small>
+                        {% elif pillo %}
+                            <small class="form-text text-muted">{{ pillo }}</small>
+                        {% endif %}
+                    </div>
+                </div>              
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Contraseña:</label>
+                    <div class="col-sm-10">
+                        <button id="show-password"  class="btn btn-danger mb-2">Cambiar contraseña</button>
+                        {% if pass_valid %}
+                            <small class="form-text text-muted">{{ pass_valid }}</small>
+                        {% elif pass %}
+                            <small class="form-text text-muted">{{ pass }}</small>
+                        {% elif pass_nada %}
+                            <small class="form-text text-muted">{{ pass_nada }}</small>
+                        {% endif %}
+                    </div>
+                    
+                </div>   
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Fecha de alta:</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" value="{{ user.date_joined.date }}">
+                    </div>
+                </div>            
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info">Actualizar cambios</button>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function(){
+        $('body').on('click', '#show-password', function(e){
+            e.preventDefault();
+            html = `<div class="form-group col-md-6 input-pass">                           
+                        <input type="password" name="pass_1" class="form-control" placeholder="Contraseña" required>
+                    </div>
+                    <div class="form-group col-md-6 input-pass">                   
+                        <input type="password" name="pass_2" class="form-control" placeholder="Repite tu contraseña" required>
+                    </div>`;
+
+            if ($(this).text() != "Cancelar"){
+                $(this).parent().after(html);
+                $("#show-password").text("Cancelar");
+                $("#email").removeClass("form-control").addClass('form-control-plaintext').attr('readonly', '');
+            } else {
+                $(".input-pass").remove();
+                $("#show-password").text("Cambiar contraseña");
+                $("#email").removeClass("form-control-plaintext").addClass('form-control').removeAttr('readonly');
+            }
+        })
+    });
+</script>
+{% endblock %}

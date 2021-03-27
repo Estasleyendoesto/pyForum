@@ -1,0 +1,445 @@
+/* general
+------------------------------------------------------*/
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #e7ebed;
+}
+
+div.wrapper {
+    margin: 20px 20px 20px 280px;
+    flex: 1 0 auto;
+}
+
+footer.footer {
+    height: 60px;
+    margin-left: 240px;
+    line-height: 60px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+
+/* User panel 
+------------------------------------------------------*/
+header.main-panel {
+    width: 240px;
+    height: 95vh;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    /*overflow: hidden;*/
+    background-color: #fff;
+    border-radius: 5px 5px 0 0;
+    /* #2c2f33   #165166     */
+    box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 8px -2px rgba(0,0,0,0.75);
+}
+
+header.main-panel span {
+    color: #292929;
+}
+
+/* Brand 
+----------------------------------- */
+div.brand {
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: #2c2f33;
+    /* #2c2f33   #165166    #212529 */
+}
+
+a.navbar-brand {
+    width: 100%;
+    height: 56px;
+    line-height: 38px;
+    margin: 0;
+    color: #fff;
+}
+
+/* User card
+----------------------------------- */
+div.user-card {
+    padding: 8px;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+div.user-card img {
+    width: 148px;
+    height: 148px;
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+    border-radius: 50%;
+    filter: blur(0.5px);
+    filter: brightness(1.3);
+    filter: contrast(1.1);
+}
+
+div.user-card span {
+    font-size: 1.3em;
+}
+
+/* User menu
+----------------------------------- */
+div.user-menu {
+    padding: 8px;
+}
+
+/* User menu, Tags menu
+----------------------------------- */
+ul.main-panel-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.main-panel-list a {
+    display: block;
+    padding: 8px 28px;
+    color: #565656;
+}
+
+ul.main-panel-list a:hover {
+    background-color: #f6f6f6;
+    text-decoration: none;
+    color: #3195ff;
+}
+
+ul.main-panel-list i {
+    padding-right: 12px;
+}
+
+/* User tags
+----------------------------------- */
+div.user-tags {
+    padding: 8px;
+    text-align: center;
+}
+
+div.user-tags span {
+    font-size: 1.3em;
+}
+
+div.user-tags ul {
+    margin: 12px 0;
+}
+
+div.user-tags li {
+    text-align: left;
+}
+
+div.user-tags a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+a#new-tag {
+    color: #16C465; 
+}
+
+div.user-tags i {
+    padding-right: 12px;
+}
+
+div.user-tags img {
+    width: 35px;
+    height: 24px;
+    margin-left: -4px;
+    padding-right: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+[data-title] {
+    position: relative;
+}
+
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+
+[data-title]:after {
+    content: attr(data-title);
+    background-color: #333;
+    color: #fff;
+    font-size: .8em;
+    position: absolute;
+    padding: 2px 12px;
+    bottom: -1.6em;
+    left: 50%;
+    white-space: nowrap;
+    box-shadow: 1px 1px 3px #222222;
+    opacity: 0;
+    border: 1px solid #111111;
+    z-index: 99999;
+    visibility: hidden; 
+}
+
+div.all-tags {
+    width: 100%;
+    height: 46px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-top: 1px solid #c1c1c1;
+    box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.63);
+    -webkit-box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.63);
+    -moz-box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.63);
+}
+
+div.all-tags a {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    display: block;
+    background-color: rgb(248, 248, 248);
+    color: #429dff;
+}
+
+div.all-tags a:hover {
+    text-decoration: none;
+    
+}
+
+/* Nav header
+----------------------------------- */
+div.nav-header {
+    margin: 20px 20px 0 280px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+}
+
+div.nav-header nav {
+    border-radius: 5px;
+}
+
+div.nav-header form input[type="search"]{
+    width: 400px;
+}
+
+/* Publicidad
+----------------------------------- */
+div.publicidad {
+    margin-left: 240px;
+    text-align: center;
+}
+
+div.publicidad img {
+    margin-bottom: 5px;
+}
+
+div.publicidad img:last-child {
+    width: 960px;
+}
+
+/* Home
+------------------------------------------------------*/
+main.thread-container {
+    padding: 5px;
+}
+
+div.general-stats {
+    margin: 0 5px 5px 5px;
+    text-align: right;
+    font-size: .8em;
+    color: rgb(104, 104, 104);
+    line-height: 36px;
+}
+
+div.general-stats span {
+    color: rgb(16, 146, 16);
+}
+
+div.thread {
+    display: flex;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    /*background-color: #fff;*/
+}
+
+table.post-list th {
+    opacity: .7;
+    text-align: center;
+}
+
+table.post-list tr > th:first-child {
+    text-align: left;
+}
+
+table.post-list td {
+    text-align: center;
+}
+
+table.post-list tr > td:first-child {
+    text-align: left;
+}
+
+table.all-center tr > th:first-child {
+    text-align: center !Important;
+}
+
+table.all-center tr > td:first-child {
+    text-align: center !Important;
+}
+
+table.post-list tr:hover {
+    background-color: rgba(0, 0, 0, 0.1); 
+}
+
+/* Login
+------------------------------------------------------*/
+main.login-form {
+    max-width: 600px;
+}
+
+main.login-form h2 {
+    font-size: 3.5em;
+}
+
+main.login-form > div {
+    margin: 40px 0 30px 0;
+    text-align: center;
+}
+
+div.auth-form-btn {
+    margin: 24px 0;
+}
+
+/* Profile
+------------------------------------------------------*/
+div.profile-header {
+    display: flex;
+    padding: 10px;
+    background-color: #08192b;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: rgb(223, 223, 223);
+}
+
+div.profile-info {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+div.profile-info h2 {
+    margin-bottom: 15px;
+}
+
+div.profile-joined span {
+    font-size: .85em;
+}
+
+div.profile-photo img {
+    width: 140px;
+    height: 140px;
+    padding: 10px;
+    object-fit: cover;
+    border-radius: 50%;
+    /* Para discutirlo... */
+    filter: blur(0.5px);
+    filter: brightness(1.3);
+    filter: contrast(1.1);
+}
+
+div.profile-activity {
+    padding: 20px;
+}
+
+/* Settings
+------------------------------------------------------*/
+div.profile-body {
+    padding: 20px;
+    background-color: #fcfcfc;
+}
+
+div.profile-body h3 {
+    margin-bottom: 15px;
+}
+
+/* Post editor
+------------------------------------------------------*/
+div.btn-save {
+    margin-top: 30px;
+}
+
+/* Post
+------------------------------------------------------*/
+div.thread-content {
+    padding: 20px;
+    background-color: #fff;
+}
+
+div.user-reply {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #f8f9fa !important;
+    color: #000;
+}
+
+small.publicado {
+    color: #969696;
+}
+
+form[name='comentario'] {
+    padding: 10px;
+}
+
+form[name='comentario'] label {
+    font-size: 1.5em;
+}
+
+form[name='comentario'] textarea {
+    height: 70px;
+}
+
+div.replies-list > div {
+    margin-bottom: 25px;
+}
+
+input.replies {
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+div.replies-list > div img {
+    margin-left: 3px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+div.replies-list > div i {
+    font-size: .85em;
+}
+
+.tags-table img {
+    border-radius: 50%;
+}
+
+div.tag-header {
+    margin: 5px;
+}
+
+.tags-table {
+    text-align: center;
+}
+
+h3.user-tags-h3 {
+    color: #fff;
+}
+
+.image-tag {
+    object-fit: cover;
+}

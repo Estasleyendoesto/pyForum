@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load tag_extras %}
+
+{# Meta #}
+{% block meta %}
+    {# Para los motores de búsqueda #}
+    <meta name="author" content="{{ post.autor }}"> <!-- Aquí el nombre del autor del hilo -->
+    <meta name="description" content="Foro online como ningún otro"> <!-- Aquí breves primeras 100 líneas del documento -->
+    <META name="keywords" content="foro, debate, discusión, internacional, español">
+    <META name="date" content="2020-05-25T08:49:37+00:00">
+
+    {# Para los enlaces usados por facebook y twitter #}
+    <meta property="og:image" content="{% static 'img/logo.png' %}"> <!-- Imagen -->
+    <meta property="og:title" content="Boo!">
+    <meta property="og:description" content="Foro online como ningún otro">
+{% endblock %}
+
+{# Estilos #}
+{% block css %}
+    <link href="{% static 'css/markdown.css' %}" rel="stylesheet">
+{% endblock %}
+
+{# Contenido principal #}
+{% block content %}
+    <main class="thread-container">
+        <div class="profile-header" style="background-color:{{ request.user.profile_color }};">
+            {% if post.autor.id == user.id %}
+                <a href="{% url 'post-editor' post=post.id %}" class="btn btn-success btn-lg" role="button" style="margin-right: 15px;"><i class="fas fa-edit"></i> Editar</a> 
+            {% endif %}  
+            {% load_img_post post.id as i %}  
+            <h2>{{ i | safe }} {{ post.titulo }}</h2>       
+        </div>
+        <div class="thread-content">
+            {% find_tag post.id as r %}
+            <small class="publicado"><i>Publicado por <a href="{% url 'profile' user=post.autor %}">@{{ post.autor }}</a> el {{ post.creado }} en {{ r | safe }}</i></small>
+            <div class="markdown">
+                {{ html | safe }}
+            </div>
+        </div>
+    </main>
+
+    <section class="thread-replies">
+        <div class="profile-header user-reply">
+            <h3>Hay {% if not post.comentarios %}0{% else %}{{ post.comentarios }}{% endif %} comentarios</h3> 
+        </div>
+        {% if request.user.is_authenticated %}
+        <form action="" method="POST" name="comentario">
+            {% csrf_token %}
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>Deja tu comentario</label>
+                {{ form.comentario|add_class:"form-control" }}
+                {% if form.comentario.help_text %}
+                    <small class="form-text text-muted">{{ form.comentario.help_text }}</small>
+                {% endif %} 
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-info">Comentar</button>
+            </div>
+        </form> 
+        <h3 style="margin-bottom:20px; margin-left: 5px;"><i class="fas fa-comment" style="opacity: .6; font-size: .9em;"></i> Comentarios</h3>
+        {% endif %}
+         
+        <div class="replies-list">
+            {% include 'comentarios.html' with comentarios=comentarios total=post.comentarios %}
+        </div>
+    </section>
+{% endblock %}
+
+{# Scripts #}
+{% block javascript %}
+    <script>
+        $(document).ready(function(){
+            $('body').on('click','#load_more',function(){
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'comentarios' %}",
+                    data: {
+                        post: {{ post.id }},
+                        next: $(this).attr('next')
+                    },
+                    success: function(response){
+                        $("#load_more").remove();
+                        $(".replies-list").append(response);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

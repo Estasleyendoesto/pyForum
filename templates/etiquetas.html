@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tag_extras %}
+
+{% block meta %}
+{% endblock %}
+
+{# Estilos #}
+{% block css %}
+{% endblock %}
+
+{# Contenido principal #}
+{% block content %}
+    <div class="tag-header">
+        <nav class="navbar navbar-dark bg-dark">
+            {% if request.user.is_authenticated %}
+            <ul class="nav">
+                <li class="nav-item active">
+                    <a class="btn btn-info" href="{% url 'add-etiqueta' %}">Nueva etiqueta</a>
+                </li>
+            </ul>
+            {% endif %}
+            <form action="{% url 'buscar-etiqueta' %}" method="GET" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" name="buscar">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Buscar Etiqueta</button>
+            </form>
+        </nav>
+     </div>
+    <main class="thread-container">
+        <table class="table table-striped tags-table post-list all-center">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-image"></i></th>
+                    <th><i class="fas fa-tag"></i></th>
+                    <th><i class="fas fa-clock"></i></th>
+                    {% if request.user.is_authenticated %}
+                    <th><i class="fas fa-plus"></i></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for etiqueta in etiquetas %}
+                    <tr>
+                        <td><img class="image-tag" src="/media/{{ etiqueta.imagen }}" alt="{{ etiqueta.nombre }}" width="30" height="30"></td>  
+                        <td>{{ etiqueta.nombre }}</td>
+                        <td>{{ etiqueta.creado }}</td>
+                        
+                        {% if request.user.is_authenticated %}
+                            {% exists etiqueta.id request.user.id as r %}
+                            {% if r %}
+                                <td><a href="" class="btn btn-info disabled">Ya has añadido esta etiqueta</a></td>                                         
+                            {% else %}
+                                <td><a href="{% url 'user-tag' id=etiqueta.id %}" class="btn btn-info">Añadir a mis etiquetas</a></td>
+                            {% endif %}                       
+                            
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>      
+    </main>
+{% endblock %}
+
+{# Scripts #}
+{% block javascript %}
+{% endblock %}

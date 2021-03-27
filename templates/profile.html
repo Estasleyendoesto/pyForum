@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tag_extras %}
+
+{% block meta %}{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+    <main class="thread-container">
+        <div class="profile-header" style="background-color:{{ usuario.profile_color }};">
+            <div class="profile-photo">
+                <img src="/media/{{ usuario.image }}" alt="{{ usuario.username }}">
+            </div>
+            <div class="profile-info">
+                <h2>{{ usuario.username|capfirst }}</h2>
+                <p>{{ usuario.frase|capfirst }}</p>
+                <div class="text-right profile-joined">
+                    <span>Es usuario desde el {{ usuario.date_joined.date }}</span>
+                </div>              
+            </div>         
+        </div>
+        <div class="profile-activity">
+            <h3>Mis hilos</h3>
+            <div class="user-activity-post">
+                <table class="table table-striped post-list">
+                    <thead>
+                        <tr>
+                            <th>Tema</th>
+                            <th><i class="fas fa-clock"></i></th>
+                            <th><i class="fas fa-comment"></i></th>
+                            <th><i class="fas fa-tag"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                            <tr>
+                                {% load_img post.id as i %}
+                                <td><a href="{% url 'post' post=post.id %}">{{ i | safe }}{{ post.titulo }}</a></td>
+                                <td>{{ post.creado }}</td>
+                                <td>{% if not post.comentarios %}0{% else %}{{ post.comentarios }}{% endif %}</td>
+                                {% load_tags post.id as r %}
+                                <td>{{ r | safe }}</td>
+                            </tr>  
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascript %}{% endblock %}

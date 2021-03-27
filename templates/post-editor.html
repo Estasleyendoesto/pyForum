@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{# Meta #}
+{% block meta %}{% endblock %}
+
+{# Estilos #}
+{% block css %}
+    <link href="{% static 'css/simplemde.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{# Contenido principal #}
+{% block content %}
+    <main class="thread-container">
+        <div class="profile-header">
+            {% if request.path == '/creator/' %}
+                <h2>Nuevo hilo</h2>
+            {% else %}
+                <h2>Editor</h2>
+            {% endif %}
+        </div>
+        <div class="profile-body">
+            <form name="post-editor" method="POST" action="
+            {% if request.path == '/creator/' %}
+                {% url 'post-creator' %}
+            {% else %}
+                {% url 'post-editor' post=post.id %}
+            {% endif %}
+            ">        
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+                {{ form.source.errors }}
+                {{ form.source }}
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Título:</label>
+                    <div class="col-sm-10">
+                    
+                        {% if post %}       
+                            {% with titulo="value:"|add:post.titulo %}                     
+                                {% if form.titulo.errors %}
+                                    {{ form.titulo|add_class:"form-control is-invalid"|attr:titulo }}
+                                {% else %}                               
+                                    {{ form.titulo|add_class:"form-control"|attr:titulo }}                              
+                                {% endif %} 
+                            {% endwith %} 
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}                          
+                        {% else %}
+                            {% if form.titulo.errors %}
+                                {{ form.titulo|add_class:"form-control is-invalid" }}
+                            {% else %}
+                                {{ form.titulo|add_class:"form-control" }}
+                            {% endif %} 
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}                                             
+                        {% endif %} 
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">Contenido para adultos:</div>
+                    <div class="col-sm-10">
+                        <div class="form-check">                     
+                            {% if post and post.adultos %}                             
+                                <input class="form-check-input" name="adultos" type="checkbox" checked>                  
+                            {% else %}
+                                <input class="form-check-input" name="adultos" type="checkbox">
+                            {% endif %}         
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">Borrador:</div>
+                    <div class="col-sm-10">
+                        <div class="form-check">                      
+                            {% if post and post.borrador %}
+                                {{ form.borrador|add_class:"form-check-input"|attr:"checked:checked" }}                  
+                            {% else %}
+                                {{ form.borrador|add_class:"form-check-input" }}
+                            {% endif %}         
+                        </div>
+                    </div>
+                </div>
+                {% if post %}
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Última modificación:</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" value="{{ post.modificado }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Creado:</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" value="{{ post.creado }}">
+                    </div>
+                </div>  
+                {% endif %}
+                <div>                          
+                    <textarea id="md" name="cuerpo"></textarea>
+                </div>
+                <div class="text-right btn-save">
+                    {% if post %}
+                        <a href="{% url 'post-tags' id=post.id %}" class="btn btn-info">Gestionar etiqueta</a>
+                    {% else %}
+                        <a href="{% url 'post-tags' id=0 %}"  class="btn btn-info">Añadir etiqueta</a>
+                    {% endif %}
+                    <button id="publicar" type="submit" class="btn btn-info">Publicar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}
+
+{# Scripts #}
+{% block javascript %}
+    <script src="{% static 'js/simplemde.min.js' %}"></script>
+    <script>
+        var before = function(){/*{{ post.cuerpo|safe }}*/}.toString().slice(13,-3);
+        var md = new SimpleMDE({ element: document.getElementById("md"), spellChecker: false, }).value(before);
+        $('[name="post-editor"]').submit(function(e){
+            $.post($(this).attr('action'), $this.serialize());
+        })
+    </script>
+{% endblock %}

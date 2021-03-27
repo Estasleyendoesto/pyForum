@@ -1,4 +1,4 @@
-![](D:\Descargas\misproyectos\Frogchan\cover.jpg)
+![](https://raw.githubusercontent.com/Estasleyendoesto/pyForum/master/cover.jpg)
 
 
 
